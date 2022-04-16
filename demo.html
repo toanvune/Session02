@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trúc Xanh</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body .flip-card-game-wrapper {
+            background-color: #1c1c1c;
+            box-shadow: .6rem 1.4rem 1.4rem rgb(0 0 0 / 50%);
+            border-radius: .5rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        body .flip-card-game-wrapper table tbody tr td {
+            padding: .5rem;
+            font-weight: 400;
+            font-size: 1.1rem;
+        }
+
+        body .flip-card-game-wrapper table tbody tr td button {
+            background-color: transparent;
+            display: block;
+            width: 6rem;
+            height: 6rem;
+            border: 0;
+            padding: 0;
+            outline: none;
+            perspective: 25rem;
+            cursor: pointer;
+        }
+
+        body .flip-card-game-wrapper table tbody tr td button .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform .5s ease-in-out;
+            transform-style: preserve-3d;
+        }
+
+        body .flip-card-game-wrapper table tbody tr td button.selected .card {
+            transform: rotateY(180deg);
+        }
+
+        body .flip-card-game-wrapper table tbody tr td button .card .front,
+        body .flip-card-game-wrapper table tbody tr td button .card .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        body .flip-card-game-wrapper table tbody tr td button .card .front {
+            background-color: rgba(255, 255, 255, 0.1);
+            background-image: url('../images/flip-card/logo.png');
+            background-size: 3rem 3rem;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: .6;
+        }
+
+        body .flip-card-game-wrapper table tbody tr td button .card .back {
+            transform: rotateY(180deg);
+        }
+
+        body .flip-card-game-wrapper table tbody tr td button .card .back img {
+            width: 100%;
+        }
+
+        @media only screen and (max-width: 992px) {
+            html {
+                font-size: 12px;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            html {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flip-card-game-wrapper">
+        <table>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        var imageArr = [];
+        var selectedBoxIndex = null;
+        var isDisabled;
+        init();
+
+        function init() {
+            imageArr = [];
+            for (let i = 0; i < 20; i++) {
+                imageArr.push(i);
+                imageArr.push(i);
+            }
+            imageArr = imageArr.sort(function () {
+                return Math.random() - 0.5
+            });
+
+            var tbody = '<tr>';
+            for (let i = 0; i < imageArr.length; i++) {
+                const image = imageArr[i];
+                tbody += '<td><button class="" id="box-' + i + '" onclick="onSelect(' + i +
+                    ')"><div class="card"><div class="front"></div><div class="back"><img src="../images/flip-card/' + image +
+                    '.jpg" alt="Image ' + image + '"/></div></div></button></td>';
+
+                if (i > 0 && ((i + 1) % 4) === 0) {
+                    tbody += '</tr>';
+
+                    if (i < imageArr.length - 1) {
+                        tbody += '<tr>';
+                    }
+                }
+            }
+            document.querySelector('body table tbody').innerHTML = tbody;
+        }
+
+        function onSelect(index) {
+            if (!isDisabled) {
+                if (selectedBoxIndex === null) {
+                    selectedBoxIndex = index;
+                    document.getElementById('box-' + index).classList.add('selected');
+                } else {
+                    document.getElementById('box-' + index).classList.add('selected');
+                    if (imageArr[selectedBoxIndex] === imageArr[index]) {
+                        document.getElementById('box-' + selectedBoxIndex).disabled = true;
+                        document.getElementById('box-' + index).disabled = true;
+                        selectedBoxIndex = null;
+                    } else {
+                        isDisabled = true;
+                        setTimeout(function () {
+                            document.getElementById('box-' + selectedBoxIndex).classList.remove('selected');
+                            document.getElementById('box-' + index).classList.remove('selected');
+                            selectedBoxIndex = null;
+                            isDisabled = false;
+                        }, 700);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
