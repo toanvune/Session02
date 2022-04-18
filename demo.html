@@ -111,7 +111,7 @@
 
         function init() {
             imageArr = [];
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 10; i++) {
                 imageArr.push(i);
                 imageArr.push(i);
             }
@@ -123,10 +123,10 @@
             for (let i = 0; i < imageArr.length; i++) {
                 const image = imageArr[i];
                 tbody += '<td><button class="" id="box-' + i + '" onclick="onSelect(' + i +
-                    ')"><div class="card"><div class="front"></div><div class="back"><img src="../images/flip-card/' + image +
-                    '.jpg" alt="Image ' + image + '"/></div></div></button></td>';
+                    ')"><div class="card"><div class="front"></div><div class="back"><img src="/trucxanhgame/images/' + image +
+                    '.jpg" alt="Image ' + image + '"/></div></div></button></td>';  
 
-                if (i > 0 && ((i + 1) % 4) === 0) {
+                if (i > 0 && ((i + 1) % 5) === 0) {
                     tbody += '</tr>';
 
                     if (i < imageArr.length - 1) {
